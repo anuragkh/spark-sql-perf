@@ -10,23 +10,33 @@ This is a performance testing framework for [Spark SQL](https://spark.apache.org
 The rest of document will use TPC-DS benchmark as an example. We will add contents to explain how to use other benchmarks add the support of a new benchmark dataset in future.
 
 ### Setup a benchmark
-Before running any query, a dataset needs to be setup by creating a `Benchmark` object.   
+Before running any query, a dataset needs to be setup by creating a `Benchmark` object.
+
+To setup TPC-DS, perform the following steps:
+
+```
+git clone https://github.com/grahn/tpcds-kit.git
+cd tpcds-kit/tools
+sudo yum -y install gcc make flex bison byacc
+make -f Makefile.suite
+/root/spark-ec2/copy-dir --delete /root/tpcds-kit
+```
 
 ```
 import com.databricks.spark.sql.perf.tpcds.Tables
 // Tables in TPC-DS benchmark used by experiments.
 // dsdgenDir is the location of dsdgen tool installed in your machines.
-val tables = new Tables(sqlContext, dsdgenDir, scaleFactor)
+val tables = new Tables(sqlContext=sqlContext, dsdgenDir="/tpcds", scaleFactor=1)
 // Generate data.
-tables.genData(location, format, overwrite, partitionTables, useDoubleForDecimal, clusterByPartitionColumns, filterOutNullPartitionValues)
+tables.genData(location="/tpcds", format="parquet", overwrite=false, partitionTables=false, useDoubleForDecimal=true, clusterByPartitionColumns=false, filterOutNullPartitionValues=false)
 // Create metastore tables in a specified database for your data.
 // Once tables are created, the current database will be switched to the specified database.
-tables.createExternalTables(location, format, databaseName, overwrite)
+tables.createExternalTables(location="/tpcds", format="parquet", databaseName="tpcds", overwrite=true)
 // Or, if you want to create temporary tables
-tables.createTemporaryTables(location, format)
+tables.createTemporaryTables(location="/tpcds", format="parquet")
 // Setup TPC-DS experiment
 import com.databricks.spark.sql.perf.tpcds.TPCDS
-val tpcds = new TPCDS (sqlContext = sqlContext)
+val tpcds = new TPCDS (sqlContext=sqlContext)
 ```
 
 ### Run benchmarking queries
