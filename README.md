@@ -27,7 +27,7 @@ Before running any query, a dataset needs to be setup by creating a `Benchmark` 
 import com.databricks.spark.sql.perf.tpcds.Tables
 // Tables in TPC-DS benchmark used by experiments.
 // dsdgenDir is the location of dsdgen tool installed in your machines.
-val tables = new Tables(sqlContext=sqlContext, dsdgenDir="/tpcds", scaleFactor=1)
+val tables = new Tables(sqlContext=sqlContext, dsdgenDir="/root/tpcds-kit", scaleFactor=1)
 // Generate data.
 tables.genData(location="/tpcds", format="parquet", overwrite=false, partitionTables=false, useDoubleForDecimal=true, clusterByPartitionColumns=false, filterOutNullPartitionValues=false)
 // Create metastore tables in a specified database for your data.
