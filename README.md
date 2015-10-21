@@ -10,7 +10,6 @@ This is a performance testing framework for [Spark SQL](https://spark.apache.org
 The rest of document will use TPC-DS benchmark as an example. We will add contents to explain how to use other benchmarks add the support of a new benchmark dataset in future.
 
 ### Setup a benchmark
-Before running any query, a dataset needs to be setup by creating a `Benchmark` object.
 
 To setup TPC-DS, perform the following steps:
 
@@ -21,6 +20,8 @@ sudo yum -y install gcc make flex bison byacc
 make -f Makefile.suite
 /root/spark-ec2/copy-dir --delete /root/tpcds-kit
 ```
+
+Before running any query, a dataset needs to be setup by creating a `Benchmark` object.
 
 ```
 import com.databricks.spark.sql.perf.tpcds.Tables
